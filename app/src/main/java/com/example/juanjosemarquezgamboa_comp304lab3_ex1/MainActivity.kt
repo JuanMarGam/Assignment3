@@ -14,30 +14,23 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.RoomDB.CityDataBase
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.Views.FavoriteActivityScreen
+import com.example.juanjosemarquezgamboa_comp304lab3_ex1.RoomDB.StockDataBase
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.Views.HomeScreen
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.Views.TopBar
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.Views.WeatherActivityScreen
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.ui.theme.WeatherAppTheme
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.viewModel.AppRepository
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.viewModel.ViewModelFactory
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.viewModel.WeatherViewModel
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.viewModel.WeatherViewModelFactory
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.viewModel.citiesViewModel
+import com.example.juanjosemarquezgamboa_comp304lab3_ex1.viewModel.stocksViewModel
 
 class MainActivity : ComponentActivity() {
     // Access the application context correctly after Activity initialization
     private val repository by lazy {
-        val database = CityDataBase.getInstance(applicationContext)
-        AppRepository(database.getCityDao())
+        val database = StockDataBase.getInstance(applicationContext)
+        AppRepository(database.getStockInfoDAO())
     }
 
     // Use the viewModels() property delegate for lifecycle-aware ViewModel
-    private val myViewModelCities: citiesViewModel by viewModels {
+    private val myViewModelStocks: stocksViewModel by viewModels {
         ViewModelFactory(repository)  // Pass repository to the factory
-    }
-    private val myViewModelWeather: WeatherViewModel by viewModels {
-        WeatherViewModelFactory(repository)
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -55,22 +48,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable("home") {
-                            Scaffold(
-                                topBar = { TopBar(myViewModelCities,navController) },
-                            ) {
-                                HomeScreen(navController, myViewModelCities)
+                            Scaffold() {
+                                HomeScreen(navController, myViewModelStocks)
                             }
                         }
-                        composable("favorites") {
-                            FavoriteActivityScreen(navController, myViewModelCities)
-                        }
-                        composable(
-                            route = "weather/{city}",
-                            arguments = listOf(navArgument("city") { type = NavType.StringType })
-                        ) { backStackEntry ->
-                            val city = backStackEntry.arguments?.getString("city") ?: ""
-                            WeatherActivityScreen(navController = navController, vm = myViewModelWeather)
-                        }
+
                     }
                 }
             }
