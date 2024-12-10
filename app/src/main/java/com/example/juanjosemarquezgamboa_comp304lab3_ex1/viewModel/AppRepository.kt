@@ -4,8 +4,6 @@ import com.example.juanjosemarquezgamboa_comp304lab3_ex1.RoomDB.City
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.RoomDB.CityDAO
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.RoomDB.StockInfo
 import com.example.juanjosemarquezgamboa_comp304lab3_ex1.RoomDB.StockInfoDAO
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.data.RetrofitClass
-import com.example.juanjosemarquezgamboa_comp304lab3_ex1.data.WeatherObject
 
 class AppRepository(private val stockDAO: StockInfoDAO) {
 
